@@ -6,17 +6,17 @@ export async function createSession(sessionId: string, email: string): Promise<v
   try {
     const ttl = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60); // 7 days
 
-  const command = new PutCommand({
-    TableName: RESOURCE_NAMES.SESSIONS_TABLE,
-    Item: {
-      id: sessionId, // Updated to match your manual table's Partition Key
-      email,
-      status: 'started',
-      createdAt: new Date().toISOString(),
-      transcript: [],
-      ttl,
-    },
-  });
+    const command = new PutCommand({
+      TableName: RESOURCE_NAMES.SESSIONS_TABLE,
+      Item: {
+        id: sessionId,
+        email,
+        status: 'started',
+        createdAt: new Date().toISOString(),
+        transcript: [],
+        ttl,
+      },
+    });
 
     await docClient.send(command);
     console.log(`[DynamoDB] Created session: ${sessionId}`);
@@ -29,7 +29,7 @@ export async function createSession(sessionId: string, email: string): Promise<v
 export async function getSession(sessionId: string): Promise<Session | null> {
   const command = new GetCommand({
     TableName: RESOURCE_NAMES.SESSIONS_TABLE,
-    Key: { id: sessionId }, // Updated to match your manual table's Partition Key
+    Key: { id: sessionId },
   });
 
   const { Item } = await docClient.send(command);
@@ -39,7 +39,7 @@ export async function getSession(sessionId: string): Promise<Session | null> {
 export async function updateSessionTranscript(sessionId: string, transcript: string[]): Promise<void> {
   const command = new UpdateCommand({
     TableName: RESOURCE_NAMES.SESSIONS_TABLE,
-    Key: { id: sessionId }, // Updated to match your manual table's Partition Key
+    Key: { id: sessionId },
     UpdateExpression: 'SET transcript = :transcript',
     ExpressionAttributeValues: {
       ':transcript': transcript,
@@ -65,7 +65,7 @@ export async function updateSessionStatus(
 
   const command = new UpdateCommand({
     TableName: RESOURCE_NAMES.SESSIONS_TABLE,
-    Key: { id: sessionId }, // Updated to match your manual table's Partition Key
+    Key: { id: sessionId },
     UpdateExpression: updateExpression,
     ExpressionAttributeNames: expressionAttributeNames,
     ExpressionAttributeValues: expressionAttributeValues,

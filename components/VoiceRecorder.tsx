@@ -117,7 +117,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscriptComple
 
       {transcript && (
         <div className="mt-4 w-full rounded-md bg-white p-3 text-sm text-charcoal shadow-inner">
-          <p className="line-clamp-3 italic opacity-70">{transcript}</p>
+          <p className="line-clamp-3 italic opacity-70">&quot;{transcript}&quot;</p>
         </div>
       )}
     </div>

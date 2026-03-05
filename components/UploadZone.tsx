@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
+import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { Camera, X } from 'lucide-react';
 import { compressImage, fileToBase64 } from '@/lib/utils/compression';
@@ -69,10 +70,11 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onImagesChange }) => {
         <div className="grid grid-cols-5 gap-2">
           {previews.map((preview, index) => (
             <div key={index} className="relative aspect-square overflow-hidden rounded-md border border-navy/10">
-              <img
+              <Image
                 src={preview}
                 alt={`Upload ${index + 1}`}
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
               />
               <button
                 onClick={(e) => {

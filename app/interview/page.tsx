@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
 import { Card } from '@/components/ui/Card';
@@ -31,7 +32,7 @@ export default function InterviewPage() {
     if (chatHistory.length === 0) {
       getNextQuestion();
     }
-  }, [sessionId]);
+  }, [sessionId, router, chatHistory.length, getNextQuestion]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -65,7 +66,7 @@ export default function InterviewPage() {
     }
   };
 
-  const getNextQuestion = async (updatedTranscript?: string[]) => {
+  const getNextQuestion = useCallback(async (updatedTranscript?: string[]) => {
     setIsAiThinking(true);
     try {
       const response = await fetch('/api/interview/chat', {
@@ -86,7 +87,7 @@ export default function InterviewPage() {
     } finally {
       setIsAiThinking(false);
     }
-  };
+  }, [transcript, images, currentImageIndex]);
 
   const handleSubmitAnswer = async () => {
     const answer = currentAnswer.trim();
@@ -165,16 +166,21 @@ export default function InterviewPage() {
             <Card className="overflow-hidden p-0 border-2 border-navy/5 shadow-xl rounded-2xl">
               <div className="relative aspect-[4/3] bg-navy/5">
                 <AnimatePresence mode="wait">
-                  <motion.img
+                  <motion.div
                     key={currentImageIndex}
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.5 }}
-                    src={images[currentImageIndex] || '/api/placeholder/400/300'}
-                    alt="Current Memory"
-                    className="h-full w-full object-cover"
-                  />
+                    className="h-full w-full relative"
+                  >
+                    <Image
+                      src={images[currentImageIndex] || '/api/placeholder/400/300'}
+                      alt="Current Memory"
+                      fill
+                      className="object-cover"
+                    />
+                  </motion.div>
                 </AnimatePresence>
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
@@ -286,7 +292,7 @@ export default function InterviewPage() {
                 Finish My Story
               </Button>
               <p className="text-xs text-center text-charcoal-light">
-                Click Finish My Story when you're ready to create your biography.
+                Click &quot;Finish My Story&quot; when you&apos;re ready to create your biography.
               </p>
             </div>
           </div>

@@ -8,17 +8,17 @@ export const LoadingBook: React.FC = () => {
   const [phase, setPhase] = useState<'wave' | 'transition' | 'book'>('wave');
   const [loadingText, setLoadingText] = useState('Listening to your story...');
 
-  const messages = [
-    'Transcribing memories...',
-    'Removing filler words...',
-    'Fixing grammar and syntax...',
-    'Organizing chronologically...',
-    'Structuring into paragraphs...',
-    'Capturing your unique voice...',
-    'Finalizing your biography...',
-  ];
-
   useEffect(() => {
+    const messages = [
+      'Transcribing memories...',
+      'Removing filler words...',
+      'Fixing grammar and syntax...',
+      'Organizing chronologically...',
+      'Structuring into paragraphs...',
+      'Capturing your unique voice...',
+      'Finalizing your biography...',
+    ];
+
     const timer = setTimeout(() => setPhase('transition'), 5000);
     const timer2 = setTimeout(() => setPhase('book'), 6500);
 

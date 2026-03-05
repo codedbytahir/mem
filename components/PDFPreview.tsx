@@ -20,7 +20,7 @@ export const PDFPreview: React.FC<PDFPreviewProps> = ({ pdfUrl, onSendEmail, isS
           ✓ Your Biography is Ready
         </h1>
         <p className="text-charcoal-light max-w-md mx-auto">
-          We have captured your memories and transformed them into a beautiful, lasting story.
+          We&apos;ve captured your memories and transformed them into a beautiful, lasting story.
         </p>
       </div>
 
